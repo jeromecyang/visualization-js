@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
-    <title>Data Visualization - Unique Value Renderer with Function Conversion</title>
+    <title>Data Visualization - Enhancement: Legend</title>
     <link rel="stylesheet" href="//js.arcgis.com/3.10/js/esri/css/esri.css">
     <style>
       html, body, #map {
@@ -35,27 +35,17 @@
           zoom: 5
         });
         
-        var layer = new FeatureLayer("//services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/NationalParkStats2013/FeatureServer/0", {
-          outFields: ["Address"]
-        });
+        var layer = new FeatureLayer("//services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/NationalParkStats2013/FeatureServer/0");
         
-        var symbol = new SimpleMarkerSymbol();
-        symbol.setColor(new Color("#fffcd4"));
-        var renderer = new UniqueValueRenderer(null, function(graphic){
-          if (graphic.attributes['Address'].indexOf("CA") !== -1 || graphic.attributes['Address'].indexOf("OR") !== -1 || graphic.attributes['Address'].indexOf("WA") !== -1) {
-            return "Pacific West";
-          }else {
-            return "Other Areas";
-          };
-        });
+        var renderer = new UniqueValueRenderer(null, "Type");
         
         var symbol1 = new SimpleMarkerSymbol();
-        symbol1.setColor(new Color("#7b3578"));
-        renderer.addValue("Pacific West", symbol1);
+        symbol1.setColor(new Color("#ed5151"));
+        renderer.addValue("National Park", symbol1);
         
         var symbol2 = new SimpleMarkerSymbol();
-        symbol2.setColor(new Color("#cccccc"));
-        renderer.addValue("Other Areas", symbol2);
+        symbol2.setColor(new Color("#149ece"));
+        renderer.addValue("National Monument", symbol2);
 
         layer.setRenderer(renderer);
         
@@ -64,7 +54,8 @@
         var legend = new Legend({
           map: map,
           layerInfos: [{
-            layer: layer
+            layer: layer,
+            title: "National Park Statistics 2013"
           }]
         }, "legend");
         legend.startup();
